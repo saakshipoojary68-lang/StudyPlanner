@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyPlanner</title>
+
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         SIDEBAR NAVIGATION
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <!-- Brand Logo -->
+        <div class="brand">
+            <b class="logo">✦</b>
+
+            <div>
+                <strong>StudyPlanner</strong>
+                <small>Make every session count</small>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav>
+            <a href="#dashboard">▦ Dashboard</a>
+            <a href="#add-task">＋ Add a task</a>
+            <a href="#calendar">▦ Study calendar</a>
+            <a href="#subject-progress">◔ Subject progress</a>
+            <a href="#achievements">🏆 Achievements</a>
+            <a href="#focus">◷ Focus timer</a>
+            <a href="#notifications">🔔 Notifications</a>
+        </nav>
+
+        <!-- Sidebar Bottom Section -->
+        <div class="side-bottom">
+
+            <p>
+                💡 <b>Small steps add up.</b>
+                <br>
+                <small>Focus on progress, not perfection.</small>
+            </p>
+
+            <button id="theme-toggle" class="ghost">
+                ☾ Toggle dark mode
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main>
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">YOUR PERSONAL STUDY SPACE</p>
+
+                <h1 id="greeting">Good evening 👋</h1>
+
+                <p class="muted">
+                    Plan your work, track your progress, and take breaks.
+                </p>
+            </div>
+
+            <div class="today">
+                📅
+                <span id="today-date"></span>
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             DASHBOARD STATISTICS
+        ========================== -->
+
+        <section id="dashboard" class="stats">
+
+            <!-- Total Tasks -->
+            <article class="stat">
+                <span>▣</span>
+                <p>Total tasks</p>
+                <strong id="total-tasks">0</strong>
+                <small>Tasks in your planner</small>
+            </article>
+
+            <!-- Completed Tasks -->
+            <article class="stat">
+                <span>✓</span>
+                <p>Completed</p>
+                <strong id="completed-tasks">0</strong>
+                <small>Keep up the good work</small>
+            </article>
+
+            <!-- Pending Tasks -->
+            <article class="stat">
+                <span>◷</span>
+                <p>Pending</p>
+                <strong id="pending-tasks">0</strong>
+                <small>One step at a time</small>
+            </article>
+
+            <!-- Completion Rate -->
+            <article class="stat">
+                <span>％</span>
+                <p>Completion rate</p>
+                <strong id="completion-rate">0%</strong>
+                <small>Progress so far</small>
+            </article>
+
+        </section>
+
+
+        <!-- =========================
+             ADD STUDY TASK
+        ========================== -->
+
+        <section id="add-task" class="panel">
+
+            <div class="heading">
+
+                <div>
+                    <p class="eyebrow">STAY ORGANIZED</p>
+                    <h2>Add a study task</h2>
+                </div>
+
+                <span>✍️</span>
+
+            </div>
+
+            <!-- Task Form -->
+            <form id="task-form" class="task-form">
+
+                <!-- Task Title -->
+                <label>
+                    Task title
+
+                    <input
+                        id="task-title"
+                        required
+                        maxlength="100"
+                        placeholder="e.g. Revise data structures"
+                    >
+                </label>
+
+                <!-- Subject -->
+                <label>
+                    Subject
+
+                    <input
+                        id="task-subject"
+                        required
+                        maxlength="50"
+                        list="subject-options"
+                        placeholder="e.g. Computer Science"
+                    >
+                </label>
+
+                <!-- Subject Suggestions -->
+                <datalist id="subject-options">
+                    <option>Mathematics</option>
+                    <option>Computer Science</option>
+                    <option>Physics</option>
+                    <option>English</option>
+                    <option>Web Development</option>
+                </datalist>
+
+                <!-- Due Date -->
+                <label>
+                    Due date
+
+                    <input
+                        id="task-date"
+                        type="date"
+                        required
+                    >
+                </label>
+
+                <!-- Priority -->
+                <label>
+                    Priority
+
+                    <select id="task-priority">
+                        <option>Medium</option>
+                        <option>High</option>
+                        <option>Low</option>
+                    </select>
+                </label>
+
+                <!-- Estimated Study Time -->
+                <label>
+                    Minutes
+
+                    <input
+                        id="task-minutes"
+                        type="number"
+                        min="5"
+                        max="600"
+                        value="30"
+                    >
+                </label>
+
+                <!-- Submit Button -->
+                <button class="primary" type="submit">
+                    ＋ Add task
+                </button>
+
+            </form>
+
+            <p id="form-message" class="message"></p>
+
+        </section>
+
+
+        <!-- =========================
+             STUDY CALENDAR
+        ========================== -->
+
+        <section id="calendar" class="panel">
+
+            <div class="heading">
+
+                <div>
+                    <p class="eyebrow">PLAN AHEAD</p>
+
+                    <h2>Study calendar</h2>
+
+                    <p class="muted">
+                        Select a date to see its tasks.
+                    </p>
+                </div>
+
+                <!-- Month Navigation -->
+                <div class="month-controls">
+
+                    <button id="prev-month">‹</button>
+
+                    <b id="calendar-month"></b>
+
+                    <button id="next-month">›</button>
+
+                </div>
+
+            </div>
+
+            <!-- Calendar Layout -->
+            <div class="calendar-layout">
+
+                <!-- Calendar Grid -->
+                <div id="calendar-grid" class="calendar-grid"></div>
+
+                <!-- Tasks for Selected Date -->
+                <div class="day-panel">
+
+                    <h3 id="selected-date-title"></h3>
+
+                    <div id="selected-day-tasks"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SUBJECT-WISE PROGRESS
+        ========================== -->
+
+        <section id="subject-progress" class="panel">
+
+            <div class="heading">
+
+                <div>
+                    <p class="eyebrow">SEE YOUR GROWTH</p>
+                    <h2>Subject-wise progress</h2>
+                </div>
+
+                <span>📈</span>
+
+            </div>
+
+            <!-- Progress Bars Generated by JavaScript -->
+            <div
+                id="subject-progress-list"
+                class="progress-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =========================
+             ACHIEVEMENTS
+        ========================== -->
+
+        <section id="achievements" class="panel">
+
+            <div class="heading">
+
+                <div>
+                    <p class="eyebrow">CELEBRATE YOUR WINS</p>
+
+                    <h2>Achievements</h2>
+
+                    <p class="muted">
+                        Badges unlock as you make progress.
+                    </p>
+                </div>
+
+                <span>🏆</span>
+
+            </div>
+
+            <!-- Achievement Badges Generated by JavaScript -->
+            <div
+                id="achievement-list"
+                class="badges"
+            ></div>
+
+        </section>
+
+
+        <!-- =========================
+             STUDY TASK LIST
+        ========================== -->
+
+        <section id="task-list" class="panel">
+
+            <div class="heading">
+
+                <div>
+                    <p class="eyebrow">YOUR TO-DO LIST</p>
+                    <h2>My study tasks</h2>
+                </div>
+
+                <!-- Export Tasks -->
+                <button id="export-csv" class="secondary">
+                    ⇩ Export CSV
+                </button>
+
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="toolbar">
+
+                <input
+                    id="task-search"
+                    type="search"
+                    placeholder="Search tasks or subjects..."
+                >
+
+                <select id="task-filter">
+                    <option value="all">All tasks</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="today">Due today</option>
+                    <option value="overdue">Overdue</option>
+                </select>
+
+                <select id="subject-filter">
+                    <option value="all">All subjects</option>
+                </select>
+
+            </div>
+
+            <!-- Tasks Generated by JavaScript -->
+            <div id="task-list-container"></div>
+
+        </section>
+
+
+        <!-- =========================
+             POMODORO FOCUS TIMER
+        ========================== -->
+
+        <section id="focus" class="panel">
+
+            <div class="heading">
+
+                <div>
+                    <p class="eyebrow">FOCUS MODE</p>
+
+                    <h2>Pomodoro focus timer</h2>
+
+                    <p class="muted">
+                        Focus for a while, then give your brain a break.
+                    </p>
+                </div>
+
+                <span>🍅</span>
+
+            </div>
+
+            <!-- Timer Layout -->
+            <div class="timer-wrap">
+
+                <!-- Timer Display -->
+                <div class="timer-circle">
+
+                    <strong id="timer-display">25:00</strong>
+
+                    <small id="timer-mode">
+                        Focus session
+                    </small>
+
+                </div>
+
+                <!-- Timer Controls -->
+                <div>
+
+                    <div class="presets">
+
+                        <button
+                            class="preset active"
+                            data-minutes="25"
+                            data-mode="Focus session"
+                        >
+                            25 min focus
+                        </button>
+
+                        <button
+                            class="preset"
+                            data-minutes="5"
+                            data-mode="Short break"
+                        >
+                            5 min break
+                        </button>
+
+                        <button
+                            class="preset"
+                            data-minutes="15"
+                            data-mode="Long break"
+                        >
+                            15 min break
+                        </button>
+
+                    </div>
+
+                    <button id="timer-start" class="primary">
+                        ▶ Start
+                    </button>
+
+                    <button id="timer-reset" class="secondary">
+                        ↻ Reset
+                    </button>
+
+                    <p id="timer-status" class="muted">
+                        Ready when you are.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BROWSER NOTIFICATIONS
+        ========================== -->
+
+        <section id="notifications" class="panel">
+
+            <div class="heading">
+
+                <div>
+                    <p class="eyebrow">DON'T MISS A DEADLINE</p>
+
+                    <h2>Browser notifications</h2>
+
+                    <p class="muted">
+                        Notifications work while this page is open
+                        and permission is granted.
+                    </p>
+                </div>
+
+                <span>🔔</span>
+
+            </div>
+
+            <!-- Notification Status -->
+            <b id="notification-status">
+                Notifications are not enabled
+            </b>
+
+            <!-- Notification Buttons -->
+            <div class="button-row">
+
+                <button
+                    id="enable-notifications"
+                    class="primary"
+                >
+                    Enable notifications
+                </button>
+
+                <button
+                    id="check-deadlines"
+                    class="secondary"
+                >
+                    Check deadlines
+                </button>
+
+            </div>
+
+            <p
+                id="notification-message"
+                class="message"
+            ></p>
+
+        </section>
+
+
+        <!-- =========================
+             STUDY BREAK REMINDERS
+        ========================== -->
+
+        <section id="break-reminder" class="panel break-panel">
+
+            <div>
+
+                <p class="eyebrow">LOOK AFTER YOURSELF</p>
+
+                <h2>Study break reminders</h2>
+
+                <p class="muted">
+                    Stretch, rest your eyes, and drink some water.
+                </p>
+
+            </div>
+
+            <!-- Break Reminder Controls -->
+            <div class="break-controls">
+
+                <label>
+                    Remind me every
+
+                    <select id="break-interval">
+                        <option value="25">25 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">60 minutes</option>
+                    </select>
+                </label>
+
+                <button id="break-toggle" class="primary">
+                    Start reminders
+                </button>
+
+                <small id="break-status">
+                    Reminders are off.
+                </small>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <footer>
+            Made for your learning journey ✦
+            Your tasks are saved in this browser.
+        </footer>
+
+    </main>
+
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+
+    <!-- JavaScript File -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
