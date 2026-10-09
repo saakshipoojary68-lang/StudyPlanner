@@ -5,14 +5,46 @@
 ========================= */
 
 :root {
+    color-scheme: light;
+
+    /* Brand and semantic color tokens */
     --bg: #f6f7fb;
     --surface: #ffffff;
     --text: #20233a;
     --muted: #7b8097;
     --border: #e8e9f1;
     --primary: #7058e8;
+    --primary-hover: #5d45d1;
     --soft: #f0edff;
+    --success: #188b64;
+    --danger: #d54b5b;
+
+    /* Typography tokens */
+    --font-body: 'DM Sans', sans-serif;
+    --font-display: 'Manrope', sans-serif;
+    --text-xs: 0.6875rem;
+    --text-sm: 0.75rem;
+    --text-base: 0.875rem;
+    --text-lg: 1.25rem;
+
+    /* Spacing tokens */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+
+    /* Shape, shadow, and motion tokens */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 0.9375rem;
+    --radius-pill: 999px;
     --shadow: 0 8px 28px #231f4b0b;
+    --shadow-hover: 0 12px 30px #231f4b14;
+    --transition-fast: 180ms ease;
+    --content-max: 1600px;
 }
 
 /* =========================
@@ -26,14 +58,20 @@
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 18px;
+    max-width: 100%;
+    overflow-x: clip;
 }
 
 body {
     margin: 0;
+    min-width: 320px;
+    max-width: 100%;
     display: flex;
+    overflow-x: clip;
     background: var(--bg);
     color: var(--text);
-    font: 14px 'DM Sans', sans-serif;
+    font: var(--text-base) var(--font-body);
+    line-height: 1.5;
 }
 
 button,
@@ -44,6 +82,33 @@ select {
 
 button {
     cursor: pointer;
+    transition: background-color var(--transition-fast),
+                color var(--transition-fast),
+                border-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
 }
 
 /* =========================
@@ -110,6 +175,14 @@ nav a.active {
     color: var(--primary);
 }
 
+nav a,
+.panel,
+.stat,
+.task-item,
+.badge {
+    overflow-wrap: anywhere;
+}
+
 /* Sidebar bottom section */
 
 .side-bottom {
@@ -140,7 +213,7 @@ nav a.active {
 main {
     margin-left: 240px;
     width: calc(100% - 240px);
-    max-width: 1600px;
+    max-width: var(--content-max);
     padding: 32px clamp(18px, 4vw, 55px) 25px;
 }
 
@@ -214,6 +287,13 @@ h2 {
     border: 1px solid var(--border);
     border-radius: 15px;
     box-shadow: var(--shadow);
+    min-width: 0;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.stat:hover,
+.panel:hover {
+    box-shadow: var(--shadow-hover);
 }
 
 .stat {
@@ -955,4 +1035,253 @@ body.dark .badge.locked {
     .break-controls {
         align-items: flex-start;
     }
+}
+
+/* =========================
+   RESPONSIVE DESIGN TOKENS
+   Mobile-first safety refinements
+========================= */
+
+/* Keep grid children from forcing the viewport wider than the screen. */
+.stats > *,
+.task-form > *,
+.calendar-layout > *,
+.timer-wrap > *,
+.task-item > * {
+    min-width: 0;
+}
+
+.task-form input,
+.task-form select,
+.toolbar input,
+.toolbar select,
+.break-controls select {
+    min-height: 42px;
+}
+
+.primary:hover,
+.secondary:hover,
+.small-btn:hover,
+.month-controls button:hover,
+.preset:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+}
+
+/* Large tablet / compact laptop */
+@media (max-width: 1024px) {
+    .task-form {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .calendar-layout {
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+
+    .timer-wrap {
+        gap: clamp(16px, 3vw, 38px);
+    }
+}
+
+/* Mobile navigation and stacked content */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 64px;
+        padding: 16px 6px;
+    }
+
+    .brand {
+        margin-bottom: 22px;
+        padding-left: 0;
+        justify-content: center;
+    }
+
+    .brand > div,
+    .side-bottom p {
+        display: none;
+    }
+
+    nav a {
+        padding: 12px 4px;
+    }
+
+    main,
+    .main-content {
+        margin-left: 64px;
+        width: calc(100% - 64px);
+        padding: 20px clamp(12px, 3vw, 22px);
+    }
+
+    .calendar-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .day-panel {
+        border-left: 0;
+        border-top: 1px solid var(--border);
+        padding: 15px 0 0;
+    }
+
+    .break-panel {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .today {
+        white-space: normal;
+    }
+}
+
+/* Phones */
+@media (max-width: 560px) {
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .topbar h1 {
+        font-size: clamp(1.35rem, 6vw, 1.8rem);
+        overflow-wrap: anywhere;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-2);
+    }
+
+    .stat {
+        padding: var(--space-3);
+    }
+
+    .stat strong {
+        font-size: 1.4rem;
+    }
+
+    .panel {
+        padding: var(--space-4);
+    }
+
+    .task-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .task-form label:first-child,
+    .task-form .primary {
+        grid-column: auto;
+    }
+
+    .toolbar {
+        flex-wrap: wrap;
+    }
+
+    .toolbar input {
+        flex-basis: 100%;
+    }
+
+    .toolbar select {
+        flex: 1 1 120px;
+        width: 100%;
+        max-width: none;
+    }
+
+    .task-item {
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: var(--space-2);
+        padding: var(--space-3);
+    }
+
+    .task-actions {
+        grid-column: 2;
+        flex-wrap: wrap;
+    }
+
+    .small-btn {
+        white-space: normal;
+    }
+
+    .timer-wrap {
+        flex-direction: column;
+        gap: var(--space-5);
+    }
+
+    .calendar-day {
+        min-height: 36px;
+        padding: 2px;
+    }
+
+    .weekday {
+        font-size: 9px;
+    }
+
+    .break-controls {
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .break-controls label,
+    .break-controls button {
+        width: 100%;
+    }
+
+    .toast {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        text-align: center;
+    }
+}
+
+/* Extra-narrow phones (320px) */
+@media (max-width: 360px) {
+    main,
+    .main-content {
+        padding-inline: 10px;
+    }
+
+    .stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .panel {
+        padding: 12px;
+    }
+
+    .heading {
+        align-items: flex-start;
+    }
+
+    .heading > span {
+        font-size: 20px;
+    }
+
+    .calendar-grid {
+        gap: 2px;
+    }
+
+    .calendar-day {
+        min-height: 32px;
+        font-size: 11px;
+    }
+
+    .timer-circle {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* Respect users who prefer less animation. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark mode uses the same design tokens with a dark color scheme. */
+body.dark {
+    color-scheme: dark;
 }
